@@ -1,0 +1,54 @@
+Đề bài
+LEVEL 1: triển khai deployment chạy nginx (default) lên kubernetes và cho phép truy cập từ bên ngoài thông qua nodePort
+
+output:
+
++ 1 deployment nginx (replicas=2 pod)
++ 1 nodePort service trỏ tới deployment
++ thực hiên curl tới nodePort và cho ra kết quả trang web mặc định của nginx
+
+Bài làm
+
+1. Tạo file nginx-deployment.yaml
+2. Tạo file nginx-service.yaml
+3. Tạo deployment: kubectl apply -f nginx-deployment.yaml
+4. Kiểm tra deployment tạo ra: kubectl get deployments
+-> Kết quả: 
+NAME    READY   UP-TO-DATE   AVAILABLE   AGE
+nginx   2/2     2            2           16m
+5. Tạo service: kubectl apply -f nginx-service.yaml
+6 Kiểm tra service tạo ra: kubectl get services
+-> Kết quả:
+NAME            TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE
+nginx-service   NodePort    10.104.82.224   <none>        80:30004/TCP   15m
+7. Láy ip của minikube để thực hiện lệnh curl: minikube ip -p star
+-> Kết quả: 192.168.49.2
+8. Kiể tra bằng lệnh: curl 192.168.49.2:30004
+-> Kết quả:
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<body>
+<h1>Welcome to nginx!</h1>
+<p>If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.</p>
+
+<p>For online documentation and support please refer to
+<a href="http://nginx.org/">nginx.org</a>.<br/>
+Commercial support is available at
+<a href="http://nginx.com/">nginx.com</a>.</p>
+
+<p><em>Thank you for using nginx.</em></p>
+</body>
+</html>
+
+
